@@ -1,7 +1,7 @@
 ## MicroMintSimulator
 
 ### How to:
-Program is run as:
+Program is run with:
 ```
 python3 MicroMintSimulator.py u k c w
 ```

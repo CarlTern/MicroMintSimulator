@@ -32,7 +32,6 @@ def throwBalls(k, u, c):
         binKey = "bin" + str(binIndex)
         if(binKey in bins):
             bins[binKey] += 1
-            print(bins[binKey])
         else:
             bins[binKey] = 1
         
@@ -41,7 +40,7 @@ def throwBalls(k, u, c):
             numberOfTossesNeededForMinting.append(tossedBalls)
             tossedBalls = 0
             usedBins.append(binKey)
-    print(mintedCoins, "coins has been minted!")
+    #print(mintedCoins, "coins has been minted!")
     #print("Threw", tossedBalls, "balls in total")
     return numberOfTossesNeededForMinting
 
@@ -52,11 +51,15 @@ def calculateConfidenceIntervalDifference(data, simulationCounter, mean, deviati
     
 
 if __name__ == "__main__":
-    parameters = getParameters()
-    u = int(parameters["u"])
-    k = int(parameters["k"])
-    c = int(parameters["c"])
-    widthOfConfidenceInterval = int(parameters["woci"])
+    #parameters = getParameters()
+    #u = int(parameters["u"])
+    #k = int(parameters["k"])
+    #c = int(parameters["c"])
+    #widthOfConfidenceInterval = int(parameters["woci"])
+    u = 16
+    k = 2
+    c = 1
+    widthOfConfidenceInterval = 22
     #bins = createBins(u)
     data = []
     simulationCounter = 0

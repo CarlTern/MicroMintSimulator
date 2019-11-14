@@ -71,7 +71,8 @@ if __name__ == "__main__":
         calculatedWidth = calculateConfidenceIntervalDifference(data, simulationCounter, mean, deviation, lambdaValue)
         print("Width of confidence interval:", calculatedWidth)
     end = time.time()
+    print("----------------------")
     print("The mean value is:", statistics.mean(data))
-    print("Time of simulation:", (end - start) / 60, "minutes")
+    print("Time elapsed:", (end - start) / 60, "minutes")
 
 

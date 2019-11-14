@@ -19,30 +19,31 @@ def getParameters():
         print("Invalid parameters")
         exit()
 
-def createBins(u):
+def throwBalls(k, u, c):
     bins = {}
-    roof = 2**int(u)
-    for i in range(0, roof):
-        index = i.to_bytes(4, byteorder='big')
-        bins[hashlib.md5(index).hexdigest()] = 0
-    return bins
-
-def throwBalls(bins, k, u, c):
     mintedCoins = 0
     tossedBalls = 0
     usedBins = []
+    numberOfTossesNeededForMinting = []
     while(mintedCoins < c):
         tossedBalls += 1
-        print(tossedBalls)
-        binIndex = random.randrange(2**int(u))
+        binIndex = random.randrange(2**u)
         #binHash = hashlib.md5(binIndex.to_bytes(100, byteorder='big')).hexdigest()
-        bins[str(binIndex)] += 1
-        if(bins[binIndex] == k and str(binIndex) not in usedBins):
+        binKey = "bin" + str(binIndex)
+        if(binKey in bins):
+            bins[binKey] += 1
+            print(bins[binKey])
+        else:
+            bins[binKey] = 1
+        
+        if(bins[binKey] == k and binKey not in usedBins):
             mintedCoins +=1
-            usedBins.append(str(binIndex))
+            numberOfTossesNeededForMinting.append(tossedBalls)
+            tossedBalls = 0
+            usedBins.append(binKey)
     print(mintedCoins, "coins has been minted!")
     #print("Threw", tossedBalls, "balls in total")
-    return tossedBalls
+    return numberOfTossesNeededForMinting
 
 def calculateConfidenceIntervalDifference(data, simulationCounter, mean, deviation, lamda):
     minValue = mean - (lambdaValue * (deviation/math.sqrt(simulationCounter)))
@@ -63,13 +64,13 @@ if __name__ == "__main__":
     calculatedWidth = widthOfConfidenceInterval + 1 # This way we will allways enter the while loop.
     while(calculatedWidth > widthOfConfidenceInterval):
         simulationCounter += 1
-        data.append(throwBalls([], k, u, c))
+        data += throwBalls(k, u, c)
         if(len(data) < 2): # Without alleast 2 values we cant calculate deviation. 
             continue
         mean = statistics.mean(data)
         deviation = statistics.stdev(data)
         calculatedWidth = calculateConfidenceIntervalDifference(data, simulationCounter, mean, deviation, lambdaValue)
         print(calculatedWidth)
-    print(statistics.mean(data))
+    print("The mean value is:", statistics.mean(data))
 
 

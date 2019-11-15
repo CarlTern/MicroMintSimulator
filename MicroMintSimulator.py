@@ -28,26 +28,19 @@ def throwBalls(k, u, c):
     bins = {} # Dictonary, compare to Map. 
     mintedCoins = 0
     tossedBalls = 0
-    usedBins = []
+
     while(mintedCoins < c):
         tossedBalls += 1
-        binIndex = str(random.randrange(2**u))
+        binIndex = random.getrandbits(u)
         if(binIndex in bins):
             bins[binIndex] += 1 # If it exist we increment. 
         else:
             bins[binIndex] = 1 # Otherwise add it.
         
-        if(bins[binIndex] == k and binIndex not in usedBins): # Bingo! we have a match and it is not used before
+        if(bins[binIndex] == k): # Bingo! we have a match and it is not used before
             mintedCoins +=1
-            usedBins.append(binIndex)
 
     return tossedBalls
-
-def calculateConfidenceIntervalDifference(data, simulationCounter, mean, deviation, lamda):
-    minValue = mean - (lambdaValue * (deviation/math.sqrt(simulationCounter)))
-    maxValue = mean + (lambdaValue * (deviation/math.sqrt(simulationCounter)))
-
-    return maxValue - minValue
     
 if __name__ == "__main__":
     parameters = getParameters()
@@ -66,10 +59,13 @@ if __name__ == "__main__":
         data.append(throwBalls(k, u, c))
         if(len(data) < 2): # Without alleast 2 values we can't calculate deviation. 
             continue
-        mean = statistics.mean(data)
-        deviation = statistics.stdev(data)
-        calculatedWidth = calculateConfidenceIntervalDifference(data, simulationCounter, mean, deviation, lambdaValue)
-        print("Width of confidence interval:", calculatedWidth)
+        if(simulationCounter % 20 is 0):
+            mean = statistics.mean(data)
+            deviation = statistics.stdev(data)
+            minValue = mean - (lambdaValue * (deviation/math.sqrt(simulationCounter)))
+            maxValue = mean + (lambdaValue * (deviation/math.sqrt(simulationCounter)))
+            calculatedWidth = maxValue - minValue
+            print("Width:", calculatedWidth)
     end = time.time()
     print("----------------------")
     print("The mean value is:", statistics.mean(data))
